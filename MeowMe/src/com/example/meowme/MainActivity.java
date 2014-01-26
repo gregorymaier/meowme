@@ -62,11 +62,11 @@ public class MainActivity extends Activity {
 	
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		
-		Toast.makeText(
-				getApplicationContext(), 
-				"onActivityResult called", 
-				Toast.LENGTH_SHORT
-				).show();
+		//Toast.makeText(
+		//		getApplicationContext(), 
+		//		"onActivityResult called", 
+		//		Toast.LENGTH_SHORT
+		//		).show();
 		
         if (resultCode == RESULT_OK) {
         	

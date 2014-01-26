@@ -26,4 +26,17 @@
         />
     </RelativeLayout>
     
+    <LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical">
+    
+    <Button
+        android:id="@+id/what_todo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick="setBitmap"/>
+    
+    </LinearLayout>
+    
 </LinearLayout>

@@ -1,6 +1,7 @@
 package com.example.meowme;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
 
@@ -35,5 +36,14 @@ public class ActivityHelpers {
                 new Rect(0, 0, 2*radius, 2*radius), null);
 	    
 	    return output;
+	}
+	
+	public static void saveBitmap(String filename, Bitmap bmp) throws IOException
+	{
+       FileOutputStream out = new FileOutputStream(
+    		   Environment.getExternalStorageDirectory() + "/" + filename
+    		   );
+       bmp.compress(Bitmap.CompressFormat.PNG, 90, out);
+       out.close();
 	}
 }
