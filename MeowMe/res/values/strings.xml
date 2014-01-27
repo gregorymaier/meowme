@@ -13,4 +13,7 @@
     <string name="title_activity_social_media">SocialMediaActivity</string>
 	<string name="hint">Hint</string>
 	<string name="happy">I\'m happy with the cropped image.</string>
+	
+	<!-- Facebook app id -->
+	<string name="app_id">404841676318436</string>
 </resources>

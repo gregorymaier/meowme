@@ -18,7 +18,7 @@ public class ActivityHelpers {
 	public static File createImageFile() throws IOException {
         // Create an image file name
         return new File(Environment.getExternalStorageDirectory(),  
-        		        Long.valueOf(new Date().getTime()).toString());
+        		        "photo_" + Long.valueOf(new Date().getTime()).toString());
     }
 	
 	public static Bitmap getCroppedBitmap(Bitmap bitmap, int centerX, int centerY, int radius) {

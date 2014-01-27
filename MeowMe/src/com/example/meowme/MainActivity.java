@@ -2,11 +2,13 @@ package com.example.meowme;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.View;
@@ -15,11 +17,12 @@ import android.widget.Toast;
 public class MainActivity extends Activity {
 	
 	public static final String PHOTO_URI = "PHOTO_URI";
+	public static final String PHOTO_PATH = "PHOTO_PATH";
 	
 	private static final int REQUEST_TAKE_PHOTO = 1;
-	private Uri selectedImageUri = null;
-	private boolean newPhoto = false;
-    private File photoFile;
+	private Uri selectedImageUri;
+	private boolean newPhoto;
+    private String photoPath;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,26 +37,31 @@ public class MainActivity extends Activity {
 		return true;
 	}
 	
+	public static File createImageFile() throws IOException {
+        // Create an image file name
+        return new File(Environment.getExternalStorageDirectory(),  
+        		        "photo_" + Long.valueOf(new Date().getTime()).toString());
+    }
+	
 	public void takePicture(View view) throws IOException {
 		newPhoto = true;
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
         if (intent.resolveActivity(getPackageManager()) != null) {
             // Create the File where the photo should go
-            photoFile = ActivityHelpers.createImageFile();
+            File photoFile = createImageFile();
+            photoPath = photoFile.getAbsolutePath();
             // Continue only if the File was successfully created
             if (photoFile != null) {
                 intent.putExtra(MediaStore.EXTRA_OUTPUT,
                         Uri.fromFile(photoFile));
                 startActivityForResult(intent, REQUEST_TAKE_PHOTO);
             }
-            System.out.println("got here");
         }
     } // end 
 	
 	public void selectPicture(View view)
 	{
-		newPhoto = false;
 		Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -62,17 +70,20 @@ public class MainActivity extends Activity {
 	
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		
+		super.onActivityResult(requestCode, resultCode, data);
+		
 		//Toast.makeText(
 		//		getApplicationContext(), 
 		//		"onActivityResult called", 
 		//		Toast.LENGTH_SHORT
 		//		).show();
 		
-        if (resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK && data != null) {
         	
         	if(data.getData() != null)
         	{
         		selectedImageUri = data.getData();
+        		newPhoto = false;
             }
         	else
         	{
@@ -99,7 +110,7 @@ public class MainActivity extends Activity {
 	
 	public void showCropActivity(View view)
     {
-		if(selectedImageUri == null && !newPhoto)
+		if(selectedImageUri == null && photoPath == null)
 		{
 			Toast.makeText(
     				getApplicationContext(), 
@@ -114,10 +125,11 @@ public class MainActivity extends Activity {
             if(!newPhoto)
             {
             	intent.putExtra(PHOTO_URI, selectedImageUri);
+            	intent.putExtra(PHOTO_PATH, "");
             }
             else
             {
-            	intent.putExtra(PHOTO_URI, photoFile.toURI());
+            	intent.putExtra(PHOTO_PATH, photoPath);
             }
     	    startActivity(intent);
 		}

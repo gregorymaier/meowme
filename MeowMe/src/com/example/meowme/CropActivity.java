@@ -5,22 +5,20 @@ import java.io.IOException;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 public class CropActivity extends Activity {
 	
 	public static final String LEFT_EYE = "com_example_meowme_LEFT_EYE";
 	public static final String RIGHT_EYE = "com_example_meowme_RIGHT_EYE";
 	
-	private Uri imageUri;
 	private ImageView imageView, croppedImageView;
 	private Bitmap originalBitmap, temp;
 	private Button label;
@@ -47,21 +45,24 @@ public class CropActivity extends Activity {
 		imageView.getLocationOnScreen(viewCoords);
 		
 		Intent intent = getIntent();
-		imageUri = (Uri) intent.getExtras().get(MainActivity.PHOTO_URI);
+		String imgPath = intent.getStringExtra(MainActivity.PHOTO_PATH);
 		
-		imageView.setImageURI(imageUri);
-		
-		try
+		if(!imgPath.equals(""))
 		{
-			originalBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-		} 
-		catch (Exception ex) 
+			imageView
+			.setImageBitmap(
+				originalBitmap = BitmapFactory
+				                 .decodeFile(imgPath));
+		}
+		else
 		{
-			Toast.makeText(
-    				getApplicationContext(), 
-    				"FATAL ERROR!", 
-    				Toast.LENGTH_LONG
-    				).show();
+			Uri uri = (Uri)intent.getExtras().get(MainActivity.PHOTO_URI);
+			imageView.setImageURI(uri);
+			try
+			{
+				originalBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
+			}
+			catch (Exception ex) {}
 		}
 	}
 
