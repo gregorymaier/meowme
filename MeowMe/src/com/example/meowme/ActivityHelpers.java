@@ -6,10 +6,11 @@ import java.io.IOException;
 import java.util.Date;
 
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Path;
 import android.graphics.Rect;
-import android.graphics.Bitmap.Config;
 import android.os.Environment;
 
 public class ActivityHelpers {
@@ -45,5 +46,11 @@ public class ActivityHelpers {
     		   );
        bmp.compress(Bitmap.CompressFormat.PNG, 90, out);
        out.close();
+	}
+	
+	public static Bitmap getBitmap(String name)
+	{
+		return BitmapFactory.decodeFile(
+				Environment.getExternalStorageDirectory() + "/" + name);
 	}
 }

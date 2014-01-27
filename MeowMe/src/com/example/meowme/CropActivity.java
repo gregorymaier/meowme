@@ -105,7 +105,7 @@ public class CropActivity extends Activity {
 		case SET_RIGHT_EYE:
 			status = DONE;
 			ActivityHelpers.saveBitmap(RIGHT_EYE, temp);
-			label.setText("Done");
+			label.setText("Done.");
 			break;
 			
 		case DONE:

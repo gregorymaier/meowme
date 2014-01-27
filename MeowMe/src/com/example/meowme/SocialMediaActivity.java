@@ -4,8 +4,12 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 
+//TODO: Need a way for the user to select from multiple social media sites
+//      so that combined image can be uploaded. On selection the image will
+//      be uploaded and the user will be sent back to MainActivity.
 public class SocialMediaActivity extends Activity {
 
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
