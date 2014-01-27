@@ -1,2 +1,5 @@
 *.class
 *.apk
+MeowMe.apk
+classes.dex
+resources.ap_
