@@ -14,6 +14,10 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
 
+/*
+ * TODO: For some reason a photo has to be taken twice
+ *       for photoPath not to be null
+ */
 public class MainActivity extends Activity {
 	
 	public static final String PHOTO_URI = "PHOTO_URI";
