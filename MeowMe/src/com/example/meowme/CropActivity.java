@@ -1,45 +1,39 @@
 package com.example.meowme;
 
+import java.io.File;
 import java.io.IOException;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+/*
+ * Let's just use built-in reliable cropping.
+ */
 public class CropActivity extends Activity {
 	
 	public static final String LEFT_EYE = "com_example_meowme_LEFT_EYE";
 	public static final String RIGHT_EYE = "com_example_meowme_RIGHT_EYE";
 	
 	private ImageView imageView, croppedImageView;
-	private Bitmap originalBitmap, workingBitmap, temp;
+	private Bitmap temp;
 	private Button label;
+	private Uri origUri;
 	
+	private final int PIC_CROP = 1;
 	private final int SET_LEFT_EYE = 0;
 	private final int SET_RIGHT_EYE = 1;
 	private final int DONE = 0xFFFF;
 	// Let's crop left eye first
 	private int status = SET_LEFT_EYE;
-	
-	// Top left point of original image view
-	private int[] viewCoords = new int[2];
-	// Need to figure these values out automatically
-	private final int xAdjustment = 15;
-	private final int yAdjustment = 15;
-	
-	//TODO: This needs to be variable and user must be able to change value from
-	//      user interface
-	private int cropRadius = 50;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,28 +46,18 @@ public class CropActivity extends Activity {
 		imageView = (ImageView) findViewById(R.id.imageView);
 		croppedImageView = (ImageView) findViewById(R.id.croppedImageView);
 		
-		imageView.getLocationOnScreen(viewCoords);
-		
 		Intent intent = getIntent();
 		String imgPath = intent.getStringExtra(MainActivity.PHOTO_PATH);
 		
 		if(!imgPath.equals(""))
 		{
-			imageView
-			.setImageBitmap(
-				originalBitmap = BitmapFactory
-				                 .decodeFile(imgPath));
+			origUri = Uri.fromFile(new File(imgPath));
 		}
 		else
 		{
-			Uri uri = (Uri)intent.getExtras().get(MainActivity.PHOTO_URI);
-			imageView.setImageURI(uri);
-			try
-			{
-				originalBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
-			}
-			catch (Exception ex) {}
+			origUri = (Uri)intent.getExtras().get(MainActivity.PHOTO_URI);
 		}
+		imageView.setImageURI(origUri);
 	}
 
 	@Override
@@ -82,40 +66,19 @@ public class CropActivity extends Activity {
 		getMenuInflater().inflate(R.menu.crop, menu);
 		return true;
 	}
-	
-	//TODO: Need to fix scaling of image and mapping of touch location to image location
-	@Override
-    public boolean onTouchEvent(MotionEvent event) {
-        Integer x = Integer.valueOf((int)event.getX()) - viewCoords[0] - xAdjustment;
-        Integer y = Integer.valueOf((int)event.getY()) - viewCoords[1] - yAdjustment;
-        
-        // Adjust for scaling?
-        //x = (int)((float)x / ImageView.SCALE_X.get(imageView));
-        //y = (int)((float)y / ImageView.SCALE_Y.get(imageView));
-        
-        // Show circle over what will get cropped out
-        Paint paint = new Paint();
-        paint.setARGB(255, 255, 0, 0);
-        workingBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
-        Canvas canvas = new Canvas(workingBitmap);
-        canvas.drawCircle(x, y, cropRadius, paint);
-        imageView.setImageBitmap(workingBitmap);
-        
-        // Grab part of original image as indicated by touch
-        croppedImageView.setImageBitmap(
-        		temp = ActivityHelpers.getCroppedBitmap(originalBitmap, x, y, cropRadius));
-        
-        return false;
-    }
 
 	public void setBitmap(View view) throws IOException
 	{
+		if (temp == null) return;
+		
 		switch (status)
 		{
 		case SET_LEFT_EYE:
 			status = SET_RIGHT_EYE;
 			ActivityHelpers.saveBitmap(LEFT_EYE, temp);
 			label.setText("Press your right eye and then press here to continue.");
+			// Force another crop
+			temp = null;
 			break;
 			
 		case SET_RIGHT_EYE:
@@ -134,4 +97,54 @@ public class CropActivity extends Activity {
 		}
 	}
 	
+	// Onclick handler
+	public void imageClicked(View view)
+	{
+		performCrop(origUri);
+	}
+	
+	// Thank you stackoverflow
+	// http://stackoverflow.com/questions/15228812/crop-image-android-android
+	private void performCrop(Uri picUri) {
+	    try {
+
+	        Intent cropIntent = new Intent("com.android.camera.action.CROP");
+	        // indicate image type and Uri
+	        cropIntent.setDataAndType(picUri, "image/*");
+	        // set crop properties
+	        cropIntent.putExtra("crop", "true");
+	        // indicate aspect of desired crop
+	        cropIntent.putExtra("aspectX", 1);
+	        cropIntent.putExtra("aspectY", 1);
+	        // indicate output X and Y
+	        //cropIntent.putExtra("outputX", 128);
+	        //cropIntent.putExtra("outputY", 128);
+	        // retrieve data on return
+	        cropIntent.putExtra("return-data", true);
+	        // start the activity - we handle returning in onActivityResult
+	        startActivityForResult(cropIntent, PIC_CROP);
+	    }
+	    // respond to users whose devices do not support the crop action
+	    catch (ActivityNotFoundException anfe) {
+	        // display an error message
+	        String errorMessage = "Whoops - your device doesn't support the crop action!";
+	        Toast toast = Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT);
+	        toast.show();
+	    }
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    super.onActivityResult(requestCode, resultCode, data);
+
+	    if (requestCode == PIC_CROP) {
+	        if (data != null) {
+	            // get the returned data
+	            Bundle extras = data.getExtras();
+	            // get the cropped bitmap
+	            croppedImageView.setImageBitmap(
+	            		temp = extras.getParcelable("data"));
+	        }
+	    }
+	}
 }
