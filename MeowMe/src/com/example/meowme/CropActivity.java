@@ -6,6 +6,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -20,7 +22,7 @@ public class CropActivity extends Activity {
 	public static final String RIGHT_EYE = "com_example_meowme_RIGHT_EYE";
 	
 	private ImageView imageView, croppedImageView;
-	private Bitmap originalBitmap, temp;
+	private Bitmap originalBitmap, workingBitmap, temp;
 	private Button label;
 	
 	private final int SET_LEFT_EYE = 0;
@@ -29,7 +31,15 @@ public class CropActivity extends Activity {
 	// Let's crop left eye first
 	private int status = SET_LEFT_EYE;
 	
+	// Top left point of original image view
 	private int[] viewCoords = new int[2];
+	// Need to figure these values out automatically
+	private final int xAdjustment = 15;
+	private final int yAdjustment = 15;
+	
+	//TODO: This needs to be variable and user must be able to change value from
+	//      user interface
+	private int cropRadius = 50;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -76,19 +86,24 @@ public class CropActivity extends Activity {
 	//TODO: Need to fix scaling of image and mapping of touch location to image location
 	@Override
     public boolean onTouchEvent(MotionEvent event) {
-        Integer x = Integer.valueOf((int)event.getX()) - viewCoords[0];
-        Integer y = Integer.valueOf((int)event.getY()) - viewCoords[1];
+        Integer x = Integer.valueOf((int)event.getX()) - viewCoords[0] - xAdjustment;
+        Integer y = Integer.valueOf((int)event.getY()) - viewCoords[1] - yAdjustment;
         
+        // Adjust for scaling?
         //x = (int)((float)x / ImageView.SCALE_X.get(imageView));
         //y = (int)((float)y / ImageView.SCALE_Y.get(imageView));
         
-        //working = original.copy(Bitmap.Config.ARGB_8888, true);
-        //Canvas canvas = new Canvas(working);
-        //canvas.drawCircle(x, y, 25, paint);
-        //imgView.setImageBitmap(working);
+        // Show circle over what will get cropped out
+        Paint paint = new Paint();
+        paint.setARGB(255, 255, 0, 0);
+        workingBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
+        Canvas canvas = new Canvas(workingBitmap);
+        canvas.drawCircle(x, y, cropRadius, paint);
+        imageView.setImageBitmap(workingBitmap);
         
+        // Grab part of original image as indicated by touch
         croppedImageView.setImageBitmap(
-        		temp = ActivityHelpers.getCroppedBitmap(originalBitmap, x, y, 100));
+        		temp = ActivityHelpers.getCroppedBitmap(originalBitmap, x, y, cropRadius));
         
         return false;
     }

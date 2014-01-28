@@ -33,8 +33,9 @@ public class ActivityHelpers {
 	    
 	    Bitmap sourceBitmap = bitmap;
 	    canvas.drawBitmap(sourceBitmap, 
-                new Rect(0, 0, sourceBitmap.getWidth(), sourceBitmap.getHeight()), 
-                new Rect(0, 0, 2*radius, 2*radius), null);
+                new Rect(0, 0, sourceBitmap.getWidth(), sourceBitmap.getHeight()),
+                new Rect(0, 0, sourceBitmap.getWidth(), sourceBitmap.getHeight()), null);
+                //new Rect(0, 0, 2*radius, 2*radius), null);
 	    
 	    return output;
 	}
