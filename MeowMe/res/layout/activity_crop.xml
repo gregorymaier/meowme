@@ -3,19 +3,24 @@
     android:layout_width="match_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical">
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
         android:contentDescription="@string/img_desc"
-        android:scaleType="fitXY"
         android:onClick="imageClicked"
-        />
+        android:scaleType="fitXY" />
+
     <Button
         android:id="@+id/what_todo"
+        style="@style/MeowMeBar"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:onClick="setBitmap"/>
+        android:layout_weight=".01"
+        android:onClick="setBitmap"
+        android:padding="40dp" />
     
     <!--
     <RelativeLayout
