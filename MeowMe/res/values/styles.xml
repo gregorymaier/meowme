@@ -25,5 +25,18 @@
 		<!--<item name="android:fontFamily">assets/fonts/Walkway UltraBold.ttf</item> -->
 		</style>
     
+    <style name="MeowMeBar" parent="android:Theme.Light">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:background">#F4AE45</item>
+        <item name="android:textSize">24sp</item>
+		<!--<item name="android:fontFamily">assets/fonts/Walkway UltraBold.ttf</item> -->
+		</style>
+		
+    <style name="MeowMeBackground" parent="android:Theme.Light">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:background">#F4AE45</item>
+        <item name="android:textSize">24sp</item>
+		<!--<item name="android:fontFamily">assets/fonts/Walkway UltraBold.ttf</item> -->
+		</style>
 
 </resources>
