@@ -29,8 +29,9 @@ public class MemeTextActivity extends Activity {
 	{
 		// Move to next step
 		Intent intent = new Intent(this, CombineActivity.class);
-		startActivity(intent);
 		intent.putExtra(TOP_TEXT, topText);
 		intent.putExtra(BOTTOM_TEXT, bottomText);
+		startActivity(intent);
+
 	}
 }
