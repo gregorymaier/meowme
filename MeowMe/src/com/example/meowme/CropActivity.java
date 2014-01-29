@@ -22,15 +22,19 @@ public class CropActivity extends Activity {
 	
 	public static final String LEFT_EYE = "com_example_meowme_LEFT_EYE";
 	public static final String RIGHT_EYE = "com_example_meowme_RIGHT_EYE";
+	public static final String NOSE = "com_example_meowme_NOSE";
+	public static final String MOUTH = "com_example_meowme_MOUTH";
 	
-	private ImageView imageView, croppedImageView;
+	private ImageView imageView;//, croppedImageView;
 	private Bitmap temp;
 	private Button label;
 	private Uri origUri;
 	
 	private final int PIC_CROP = 1;
-	private final int SET_LEFT_EYE = 0;
-	private final int SET_RIGHT_EYE = 1;
+	private final int SET_LEFT_EYE = 1;
+	private final int SET_RIGHT_EYE = 2;
+	private final int SET_NOSE = 3;
+	private final int SET_MOUTH = 4;
 	private final int DONE = 0xFFFF;
 	// Let's crop left eye first
 	private int status = SET_LEFT_EYE;
@@ -44,7 +48,7 @@ public class CropActivity extends Activity {
 		label.setText("Press your left eye and then press here to continue.");
 		
 		imageView = (ImageView) findViewById(R.id.imageView);
-		croppedImageView = (ImageView) findViewById(R.id.croppedImageView);
+		//croppedImageView = (ImageView) findViewById(R.id.croppedImageView);
 		
 		Intent intent = getIntent();
 		String imgPath = intent.getStringExtra(MainActivity.PHOTO_PATH);
@@ -82,14 +86,33 @@ public class CropActivity extends Activity {
 			break;
 			
 		case SET_RIGHT_EYE:
-			status = DONE;
+			status = SET_NOSE;
 			ActivityHelpers.saveBitmap(RIGHT_EYE, temp);
+			label.setText("Press your nose and then press here to continue.");
+			// Force another crop
+			temp = null;
+			break;
+			
+		case SET_NOSE:
+			status = SET_MOUTH;
+			ActivityHelpers.saveBitmap(NOSE, temp);
+			label.setText("Press your mouth and then press here to continue.");
+			// Force another crop
+			temp = null;
+			break;
+			
+		case SET_MOUTH:
+			status = DONE;
+			ActivityHelpers.saveBitmap(MOUTH, temp);
 			label.setText("Done.");
+			// Move to next step
+			Intent intent = new Intent(this, CombineActivity.class);
+			startActivity(intent);
 			break;
 			
 		case DONE:
-			Intent intent = new Intent(this, CombineActivity.class);
-			startActivity(intent);
+			//Intent intent = new Intent(this, CombineActivity.class);
+			//startActivity(intent);
 			break;
 			
 		default:
@@ -141,9 +164,10 @@ public class CropActivity extends Activity {
 	        if (data != null) {
 	            // get the returned data
 	            Bundle extras = data.getExtras();
+	            temp = extras.getParcelable("data");
 	            // get the cropped bitmap
-	            croppedImageView.setImageBitmap(
-	            		temp = extras.getParcelable("data"));
+	            //croppedImageView.setImageBitmap(
+	            //		temp = extras.getParcelable("data"));
 	        }
 	    }
 	}

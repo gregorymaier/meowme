@@ -23,7 +23,7 @@ public class CombineActivity extends Activity {
 	
 	public static String IMAGE_TO_UPLOAD = "com.example.meowme.IMAGE_TO_UPLOAD";
 	
-	private Bitmap leftEye, rightEye, catImage, combined;
+	private Bitmap leftEye, rightEye, mouth, nose, catImage, combined;
 	private ImageView combImgView;
 
 	@Override
@@ -41,15 +41,17 @@ public class CombineActivity extends Activity {
 		// Get the Bitmap objects of the left and right eye
 		leftEye = ActivityHelpers.getBitmap(CropActivity.LEFT_EYE);
 		rightEye = ActivityHelpers.getBitmap(CropActivity.RIGHT_EYE);
+		mouth = ActivityHelpers.getBitmap(CropActivity.MOUTH);
+		nose = ActivityHelpers.getBitmap(CropActivity.NOSE);
 		
 		// Get the cat image
-		catImage = BitmapFactory.decodeResource(getResources(), R.drawable.cat_tie);
+		catImage = BitmapFactory.decodeResource(getResources(), R.drawable.cat2_template_720w);
 		
 		// Make a canvas to draw on - becomes final product
 		// * When this is done for real the eyes will be drawn first
 		// * and then the cat image will be drawn over them
 		// ** The size will be based on the cat template image's size
-		combined = Bitmap.createBitmap(500, 750, Config.ARGB_8888);
+		combined = Bitmap.createBitmap(720, 1008, Config.ARGB_8888);
 		Canvas c = new Canvas(combined);
 		
 		@SuppressWarnings("deprecation")
@@ -61,15 +63,28 @@ public class CombineActivity extends Activity {
 		@SuppressWarnings("deprecation")
 		Drawable d2 = new BitmapDrawable(rightEye);
 		
-		// Draw cat - fill canvas
-		d0.setBounds(0, 0, 500, 750);
-		d0.draw(c);
-		// Draw left eye - 100x100
-		d1.setBounds(50, 50, 150, 150);
+		@SuppressWarnings("deprecation")
+		Drawable d3 = new BitmapDrawable(mouth);
+		
+		@SuppressWarnings("deprecation")
+		Drawable d4 = new BitmapDrawable(nose);
+		
+		// Draw left eye - 
+		d1.setBounds(152, 312, 290, 420);
 		d1.draw(c);
-		// Draw right eye
-		d2.setBounds(250, 50, 350, 150);
+		// Draw right eye - 
+		d2.setBounds(448, 312, 576, 420);
 		d2.draw(c);
+		// Draw mouth -
+		d3.setBounds(282, 622, 460, 732);
+		d3.draw(c);
+		// Draw nose - 
+		d4.setBounds(310, 522, 438, 604);
+		d4.draw(c);
+		
+		// Draw cat - fill canvas
+		d0.setBounds(0, 0, 720, 1008);
+		d0.draw(c);
 		
 		// How to draw text on image for Meme
 		Paint paint = new Paint(); // Create a pen
@@ -81,7 +96,7 @@ public class CombineActivity extends Activity {
 		paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
 		
 		// Write something on image
-		c.drawText("TESTING", 250, 500, paint);
+		c.drawText("TOP LINE COMMENT", 25, 75, paint);
 		
 		// Set the image
 		combImgView.setImageBitmap(combined);
