@@ -5,6 +5,11 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -65,6 +70,18 @@ public class CombineActivity extends Activity {
 		// Draw right eye
 		d2.setBounds(250, 50, 350, 150);
 		d2.draw(c);
+		
+		// How to draw text on image for Meme
+		Paint paint = new Paint(); // Create a pen
+		paint.setColor(Color.RED); // Set color of pen
+		paint.setTextSize(60); // Set text size
+		paint.setTypeface( // Set font
+				Typeface
+				.createFromAsset(getAssets(), "fonts/Walkway UltraBold.ttf"));
+		paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
+		
+		// Write something on image
+		c.drawText("TESTING", 250, 500, paint);
 		
 		// Set the image
 		combImgView.setImageBitmap(combined);
