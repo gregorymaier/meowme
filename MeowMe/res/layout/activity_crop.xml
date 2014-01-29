@@ -1,21 +1,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="fill_parent"
     android:orientation="vertical">
-
-    <RelativeLayout
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content">
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:contentDescription="@string/img_desc"
+        android:scaleType="fitXY"
         android:onClick="imageClicked"
         />
-    </RelativeLayout>
+    <Button
+        android:id="@+id/what_todo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick="setBitmap"/>
     
+    <!--
     <RelativeLayout
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content">
@@ -38,6 +40,6 @@
         android:layout_height="wrap_content"
         android:onClick="setBitmap"/>
     
-    </LinearLayout>
+    </LinearLayout>-->
     
 </LinearLayout>
