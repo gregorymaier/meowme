@@ -1,26 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.meowme"
+    package="com.meowme"
     android:versionCode="1"
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="14"
+        android:minSdkVersion="15"
         android:targetSdkVersion="19" />
-
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="true" />
-
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         <activity
-            android:name="com.example.meowme.MainActivity"
+            android:name="com.meowme.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,18 +22,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.example.meowme.CropActivity"
-            android:label="@string/title_activity_crop" >
-        </activity>
-        <activity
-            android:name="com.example.meowme.CombineActivity"
-            android:label="@string/title_activity_combine" >
-        </activity>
-        <activity
-            android:name="com.example.meowme.SocialMediaActivity"
-            android:label="@string/title_activity_social_media" >
-        </activity>
+        
+        <activity android:name="TakePictureActivity"></activity>
+        <activity android:name="FromLibraryActivity"></activity>
     </application>
 
 </manifest>

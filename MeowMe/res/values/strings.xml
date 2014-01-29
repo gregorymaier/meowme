@@ -3,17 +3,8 @@
 
     <string name="app_name">MeowMe</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="title_activity_crop">CropActivity</string>
-    <string name="take_pic">Take Photo</string>
-    <string name="choose_pic">Choose From Library</string>
-    <string name="continue_string">Continue</string>
-    <string name="img_desc">Chosen Photo</string>
-    <string name="title_activity_combine">CombineActivity</string>
-    <string name="title_activity_social_media">SocialMediaActivity</string>
-	<string name="hint">Hint</string>
-	<string name="happy">I\'m happy with the cropped image.</string>
-	
-	<!-- Facebook app id -->
-	<string name="app_id">404841676318436</string>
+    <string name="take_pic">Take Picture</string>
+    <string name="from_lib">From Library</string>
+    
+
 </resources>

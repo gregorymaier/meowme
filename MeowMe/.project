@@ -3,7 +3,6 @@
 	<name>MeowMe</name>
 	<comment></comment>
 	<projects>
-		<project>FacebookSDK</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

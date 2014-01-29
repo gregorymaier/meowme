@@ -17,13 +17,13 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
     
-    
-    <style name="MeowMeBtn" parent="android:Theme.Light">
-        <item name="android:textColor">#F4AE45</item>
+    <style name="ButtonTheme">
         <item name="android:background">#FFFFFF</item>
-        <item name="android:textSize">24sp</item>
-		<!--<item name="android:fontFamily">assets/fonts/Walkway UltraBold.ttf</item> -->
-		</style>
+        <item name="android:textColor">#F4AE45</item>
+    </style>
     
+    <style name="Background">
+        <item name="android:background">#F4AE45</item>
+    </style>
 
 </resources>
