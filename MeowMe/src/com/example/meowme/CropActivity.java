@@ -106,7 +106,7 @@ public class CropActivity extends Activity {
 			ActivityHelpers.saveBitmap(MOUTH, temp);
 			label.setText("Done.");
 			// Move to next step
-			Intent intent = new Intent(this, CombineActivity.class);
+			Intent intent = new Intent(this, MemeTextActivity.class);
 			startActivity(intent);
 			break;
 			

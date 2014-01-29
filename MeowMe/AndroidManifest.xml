@@ -40,6 +40,10 @@
             android:name="com.example.meowme.SocialMediaActivity"
             android:label="@string/title_activity_social_media" >
         </activity>
+        <activity
+            android:name="com.example.meowme.MemeTextActivity"
+            android:label="@string/title_activity_meme_text" >
+        </activity>
     </application>
 
 </manifest>

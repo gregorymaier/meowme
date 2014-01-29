@@ -1,6 +1,7 @@
 package com.example.meowme;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
@@ -30,10 +31,10 @@ public class CombineActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_combine);
+		Intent intent = getIntent();
 		
-		/*
-		 * Junk example that shows how combining image functionality works
-		 */
+		String topText = intent.getStringExtra(MemeTextActivity.TOP_TEXT);
+		String bottomText = intent.getStringExtra(MemeTextActivity.BOTTOM_TEXT);
 		
 		// Get the ImageView defined in the layout
 		combImgView = (ImageView) findViewById(R.id.combinedImageView);
@@ -95,8 +96,9 @@ public class CombineActivity extends Activity {
 				.createFromAsset(getAssets(), "fonts/Walkway UltraBold.ttf"));
 		paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
 		
-		// Write something on image
-		c.drawText("TOP LINE COMMENT", 25, 75, paint);
+		// Draw meme text
+		c.drawText(topText, 25, 75, paint);
+		c.drawText(bottomText, 25, 695, paint);
 		
 		// Set the image
 		combImgView.setImageBitmap(combined);
