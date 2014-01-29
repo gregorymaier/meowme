@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.EditText;
 
 public class MemeTextActivity extends Activity {
 
@@ -27,6 +28,11 @@ public class MemeTextActivity extends Activity {
 	
 	public void done(View view)
 	{
+		EditText topString = (EditText) findViewById(R.id.editText1);
+		EditText bottomString = (EditText) findViewById(R.id.editText2);
+		topText = topString.getText().toString();
+		bottomText = bottomString.getText().toString();
+		
 		// Move to next step
 		Intent intent = new Intent(this, CombineActivity.class);
 		intent.putExtra(TOP_TEXT, topText);
