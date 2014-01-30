@@ -3,29 +3,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    
-    <RelativeLayout
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content">
+
     <ImageView
         android:id="@+id/combinedImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/img_desc"
-        />
-    </RelativeLayout>
-    
-    <LinearLayout
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:orientation="vertical">
-    
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:contentDescription="@string/img_desc" />
+
     <Button
         android:id="@+id/publishButton"
+        style="@style/MeowMeBar"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:onClick="publish"/>
-    
-    </LinearLayout>
+        android:layout_weight=".01"
+        android:onClick="publish"
+        android:padding="40dp" />
     
 </LinearLayout>
