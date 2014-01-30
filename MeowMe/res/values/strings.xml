@@ -17,5 +17,5 @@
     <!-- Facebook app id -->
     <string name="app_id">404841676318436</string>
     <string name="title_activity_meme_text">MemeTextActivity</string>
-
+	<string name="add_cap"></string>
 </resources>

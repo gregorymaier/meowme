@@ -2,13 +2,18 @@ package com.example.meowme;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +24,8 @@ import android.widget.Toast;
  * Let's just use built-in reliable cropping.
  */
 public class CropActivity extends Activity {
+	
+	private static Context context;
 	
 	public static final String LEFT_EYE = "com_example_meowme_LEFT_EYE";
 	public static final String RIGHT_EYE = "com_example_meowme_RIGHT_EYE";
@@ -44,6 +51,8 @@ public class CropActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_crop);
 		
+		context = getApplicationContext();
+		
 		label = (Button) findViewById(R.id.what_todo);
 		label.setText("Press your left eye and then press here to continue.");
 		
@@ -61,6 +70,26 @@ public class CropActivity extends Activity {
 		{
 			origUri = (Uri)intent.getExtras().get(MainActivity.PHOTO_URI);
 		}
+		
+		Bitmap src = BitmapFactory.decodeFile(origUri.getPath());
+		int orientation = ActivityHelpers.getCameraPhotoOrientation(context, origUri, origUri.getPath());
+		Matrix matrix = new Matrix();
+		matrix.postRotate(orientation);
+		
+		Bitmap fixed = 
+				Bitmap.createBitmap(src, 0, 0, src.getWidth(), src.getHeight(), matrix, true);
+		
+		String newImg = "pic123456";
+		
+		try
+		{
+		ActivityHelpers.saveBitmap(newImg, fixed);
+		} catch (Exception ex) {}
+		
+		origUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory() + "/" + newImg));
+		
+		System.out.println("ORIENTATINO:" + orientation);
+		
 		imageView.setImageURI(origUri);
 	}
 
@@ -171,4 +200,5 @@ public class CropActivity extends Activity {
 	        }
 	    }
 	}
+	
 }
