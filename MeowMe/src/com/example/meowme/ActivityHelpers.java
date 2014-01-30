@@ -7,11 +7,7 @@ import java.util.Date;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Path;
-import android.graphics.Rect;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Environment;
@@ -23,25 +19,6 @@ public class ActivityHelpers {
         return new File(Environment.getExternalStorageDirectory(),  
         		        "photo_" + Long.valueOf(new Date().getTime()).toString());
     }
-	
-	public static Bitmap getCroppedBitmap(Bitmap bitmap, int centerX, int centerY, int radius) {
-	    Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
-	            bitmap.getHeight(), Config.ARGB_8888);
-	    
-	    Canvas canvas = new Canvas(output);
-	    Path path = new Path();
-	    
-	    path.addCircle(centerX, centerY, radius, Path.Direction.CCW);
-	    canvas.clipPath(path);
-	    
-	    Bitmap sourceBitmap = bitmap;
-	    canvas.drawBitmap(sourceBitmap, 
-                new Rect(0, 0, sourceBitmap.getWidth(), sourceBitmap.getHeight()),
-                new Rect(0, 0, sourceBitmap.getWidth(), sourceBitmap.getHeight()), null);
-                //new Rect(0, 0, 2*radius, 2*radius), null);
-	    
-	    return output;
-	}
 	
 	public static void saveBitmap(String filename, Bitmap bmp) throws IOException
 	{
@@ -58,6 +35,9 @@ public class ActivityHelpers {
 				Environment.getExternalStorageDirectory() + "/" + name);
 	}
 	
+	// For some reason we get rotated images now and then
+	// Thank you stackoverflow for how to figure out this rotation so we can undo it
+	// http://stackoverflow.com/questions/4517634/picture-orientation-from-gallery-camera-intent
 	public static int getCameraPhotoOrientation(Context context, Uri imageUri, String imagePath){
 	     int rotate = 0;
 	     try {

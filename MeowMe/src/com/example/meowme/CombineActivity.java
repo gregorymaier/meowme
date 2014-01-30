@@ -1,5 +1,8 @@
 package com.example.meowme;
 
+import java.io.IOException;
+import java.util.Date;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -18,8 +21,6 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
 
-//TODO: Need to combine cropped bitmaps with cat bitmap into 1 bitmap.
-//      ***** We need to add functionality to put the Meme text in this Activity ******
 public class CombineActivity extends Activity {
 	
 	public static String IMAGE_TO_UPLOAD = "com.example.meowme.IMAGE_TO_UPLOAD";
@@ -49,9 +50,6 @@ public class CombineActivity extends Activity {
 		catImage = BitmapFactory.decodeResource(getResources(), R.drawable.cat2_template_720w);
 		
 		// Make a canvas to draw on - becomes final product
-		// * When this is done for real the eyes will be drawn first
-		// * and then the cat image will be drawn over them
-		// ** The size will be based on the cat template image's size
 		combined = Bitmap.createBitmap(720, 1008, Config.ARGB_8888);
 		Canvas c = new Canvas(combined);
 		
@@ -87,18 +85,35 @@ public class CombineActivity extends Activity {
 		d0.setBounds(0, 0, 720, 1008);
 		d0.draw(c);
 		
+		float textSize = 86;
 		// How to draw text on image for Meme
 		Paint paint = new Paint(); // Create a pen
 		paint.setColor(Color.WHITE); // Set color of pen
-		paint.setTextSize(86); // Set text size
+		paint.setTextSize(textSize); // Set text size
 		paint.setTypeface( // Set font
 				Typeface
 				.createFromAsset(getAssets(), "fonts/Walkway UltraBold.ttf"));
 		paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
 		
 		// Draw meme text
-		c.drawText(topText, 360, 75, paint);
-		c.drawText(bottomText, 360, 975, paint);
+		// Resize it to make it readable and centered
+		float left = (720 - paint.measureText(topText))/2;
+		
+		while(left < 0)
+		{
+			paint.setTextSize(textSize -= 2);
+			left = (720 - paint.measureText(topText))/2;
+		}
+		c.drawText(topText, left, 85, paint);
+		
+		paint.setTextSize(textSize = 86);
+		left = (720 - paint.measureText(bottomText))/2;
+		while(left < 0)
+		{
+			paint.setTextSize(textSize -= 2);
+			left = (720 - paint.measureText(bottomText))/2;
+		}
+		c.drawText(bottomText, left, 900, paint);
 		
 		// Set the image
 		combImgView.setImageBitmap(combined);
@@ -115,8 +130,10 @@ public class CombineActivity extends Activity {
 	 * Probably just save to gallery. If we have time use Facebook API to upload
 	 * to user's wall.
 	 */
-	public void publish(View view)
+	public void publish(View view) throws IOException
 	{
-		
+		ActivityHelpers.saveBitmap("pic_" + (new Date()).getTime(), combined);
+		Intent intent = new Intent(this, MainActivity.class);
+		startActivity(intent);
 	}
 }

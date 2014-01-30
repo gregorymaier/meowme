@@ -2,7 +2,6 @@ package com.example.meowme;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -14,6 +13,7 @@ import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -32,7 +32,7 @@ public class CropActivity extends Activity {
 	public static final String NOSE = "com_example_meowme_NOSE";
 	public static final String MOUTH = "com_example_meowme_MOUTH";
 	
-	private ImageView imageView;//, croppedImageView;
+	private ImageView imageView;
 	private Bitmap temp;
 	private Button label;
 	private Uri origUri;
@@ -54,24 +54,32 @@ public class CropActivity extends Activity {
 		context = getApplicationContext();
 		
 		label = (Button) findViewById(R.id.what_todo);
-		label.setText("Press your left eye and then press here to continue.");
+		label.setText("Crop your left eye and then press here to continue.");
 		
 		imageView = (ImageView) findViewById(R.id.imageView);
-		//croppedImageView = (ImageView) findViewById(R.id.croppedImageView);
 		
 		Intent intent = getIntent();
 		String imgPath = intent.getStringExtra(MainActivity.PHOTO_PATH);
+		Bitmap src = null;
 		
 		if(!imgPath.equals(""))
 		{
 			origUri = Uri.fromFile(new File(imgPath));
+			src = BitmapFactory.decodeFile(imgPath);
 		}
 		else
 		{
 			origUri = (Uri)intent.getExtras().get(MainActivity.PHOTO_URI);
+			try
+			{
+				src = MediaStore.Images.Media.getBitmap(this.getContentResolver(), origUri);
+			}
+			catch (Exception ex)
+			{
+			
+			}
 		}
 		
-		Bitmap src = BitmapFactory.decodeFile(origUri.getPath());
 		int orientation = ActivityHelpers.getCameraPhotoOrientation(context, origUri, origUri.getPath());
 		Matrix matrix = new Matrix();
 		matrix.postRotate(orientation);
@@ -83,8 +91,12 @@ public class CropActivity extends Activity {
 		
 		try
 		{
-		ActivityHelpers.saveBitmap(newImg, fixed);
-		} catch (Exception ex) {}
+			ActivityHelpers.saveBitmap(newImg, fixed);
+		}
+		catch (Exception ex) 
+		{
+			
+		}
 		
 		origUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory() + "/" + newImg));
 		
@@ -109,7 +121,7 @@ public class CropActivity extends Activity {
 		case SET_LEFT_EYE:
 			status = SET_RIGHT_EYE;
 			ActivityHelpers.saveBitmap(LEFT_EYE, temp);
-			label.setText("Press your right eye and then press here to continue.");
+			label.setText("Crop your right eye and then press here to continue.");
 			// Force another crop
 			temp = null;
 			break;
@@ -117,7 +129,7 @@ public class CropActivity extends Activity {
 		case SET_RIGHT_EYE:
 			status = SET_NOSE;
 			ActivityHelpers.saveBitmap(RIGHT_EYE, temp);
-			label.setText("Press your nose and then press here to continue.");
+			label.setText("Crop your nose and then press here to continue.");
 			// Force another crop
 			temp = null;
 			break;
@@ -125,7 +137,7 @@ public class CropActivity extends Activity {
 		case SET_NOSE:
 			status = SET_MOUTH;
 			ActivityHelpers.saveBitmap(NOSE, temp);
-			label.setText("Press your mouth and then press here to continue.");
+			label.setText("Crop your mouth and then press here to continue.");
 			// Force another crop
 			temp = null;
 			break;
@@ -133,15 +145,13 @@ public class CropActivity extends Activity {
 		case SET_MOUTH:
 			status = DONE;
 			ActivityHelpers.saveBitmap(MOUTH, temp);
-			label.setText("Done.");
+			label.setText("Continue");
 			// Move to next step
 			Intent intent = new Intent(this, MemeTextActivity.class);
 			startActivity(intent);
 			break;
 			
 		case DONE:
-			//Intent intent = new Intent(this, CombineActivity.class);
-			//startActivity(intent);
 			break;
 			
 		default:
@@ -168,9 +178,6 @@ public class CropActivity extends Activity {
 	        // indicate aspect of desired crop
 	        cropIntent.putExtra("aspectX", 1);
 	        cropIntent.putExtra("aspectY", 1);
-	        // indicate output X and Y
-	        //cropIntent.putExtra("outputX", 128);
-	        //cropIntent.putExtra("outputY", 128);
 	        // retrieve data on return
 	        cropIntent.putExtra("return-data", true);
 	        // start the activity - we handle returning in onActivityResult
@@ -194,9 +201,6 @@ public class CropActivity extends Activity {
 	            // get the returned data
 	            Bundle extras = data.getExtras();
 	            temp = extras.getParcelable("data");
-	            // get the cropped bitmap
-	            //croppedImageView.setImageBitmap(
-	            //		temp = extras.getParcelable("data"));
 	        }
 	    }
 	}

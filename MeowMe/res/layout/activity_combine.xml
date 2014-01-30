@@ -18,6 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_weight=".01"
         android:onClick="publish"
+        android:text="Save Image"
         android:padding="40dp" />
     
 </LinearLayout>

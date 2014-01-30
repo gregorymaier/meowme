@@ -14,10 +14,6 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
 
-/*
- * TODO: For some reason a photo has to be taken twice
- *       for photoPath not to be null
- */
 public class MainActivity extends Activity {
 	
 	public static final String PHOTO_URI = "PHOTO_URI";
@@ -47,6 +43,8 @@ public class MainActivity extends Activity {
         		        "photo_" + Long.valueOf(new Date().getTime()).toString());
     }
 	
+	// Thank you to developer.android.com tutorials - use camera to take picture
+	// http://developer.android.com/training/camera/photobasics.html
 	public void takePicture(View view) throws IOException {
 		newPhoto = true;
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -76,12 +74,6 @@ public class MainActivity extends Activity {
 		
 		super.onActivityResult(requestCode, resultCode, data);
 		
-		//Toast.makeText(
-		//		getApplicationContext(), 
-		//		"onActivityResult called", 
-		//		Toast.LENGTH_SHORT
-		//		).show();
-		
         if (resultCode == RESULT_OK && data != null) {
         	
         	if(data.getData() != null)
@@ -97,18 +89,6 @@ public class MainActivity extends Activity {
         				Toast.LENGTH_LONG
         				).show();
             }
-        	
-        	if (requestCode == 100 && resultCode == RESULT_OK) { 
-                //Bitmap photo = (Bitmap) data.getExtras().get("data");
-                //path = getPath(selectedImageUri);
-                //preview.setImageURI(selectedImageUri);
-        	}
-        	
-        	if (requestCode == 10)
-        	{
-        		//selectedPath = getPath(selectedImageUri);
-                //preview.setImageURI(selectedImageUri);
-        	}
         }
     }
 	
