@@ -89,16 +89,16 @@ public class CombineActivity extends Activity {
 		
 		// How to draw text on image for Meme
 		Paint paint = new Paint(); // Create a pen
-		paint.setColor(Color.RED); // Set color of pen
-		paint.setTextSize(60); // Set text size
+		paint.setColor(Color.WHITE); // Set color of pen
+		paint.setTextSize(86); // Set text size
 		paint.setTypeface( // Set font
 				Typeface
 				.createFromAsset(getAssets(), "fonts/Walkway UltraBold.ttf"));
 		paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
 		
 		// Draw meme text
-		c.drawText(topText, 25, 75, paint);
-		c.drawText(bottomText, 25, 695, paint);
+		c.drawText(topText, 360, 75, paint);
+		c.drawText(bottomText, 360, 975, paint);
 		
 		// Set the image
 		combImgView.setImageBitmap(combined);
