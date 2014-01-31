@@ -13,6 +13,9 @@
     <string name="title_activity_social_media">SocialMediaActivity</string>
     <string name="hint">Hint</string>
     <string name="happy">I\'m happy with the cropped image.</string>
+    <string name="bMeme">Enter bottom text for Meme</string>
+    <string name="tMeme">"Enter top text for Meme"</string>
+    <string name="done_str">Done</string>
 
     <!-- Facebook app id -->
     <string name="app_id">404841676318436</string>

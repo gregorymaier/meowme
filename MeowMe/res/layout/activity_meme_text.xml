@@ -20,8 +20,8 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:ems="10"
-        android:hint="Add Footer" />
-
+        android:hint="@string/bMeme" />
+    
     <EditText
         android:id="@+id/editText1"
         android:layout_width="wrap_content"
@@ -33,7 +33,7 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="89dp"
         android:ems="10"
-        android:hint="Add Header" />
+        android:hint="@string/tMeme" />
 
     <Button
         android:id="@+id/button1"
@@ -49,8 +49,8 @@
         android:paddingLeft="100dp"
         android:paddingRight="100dp"
         android:paddingTop="15dp"
-        android:text="Done" />
-
+        android:text="@string/done_str"/>
+    
     <TextView
         android:id="@+id/textView1"
         style="@style/MeowMeBar"
