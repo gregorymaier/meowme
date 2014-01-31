@@ -1,0 +1,12 @@
+Team members: Alexander Cruttenden, Gregory Maier, Ross Evans
+Date: 1/30/14
+Class: Human Computer Interaction
+Project Outline:
+Android application demonstrating use of custom interfaces as well as
+use of Android built-in interfaces. The application allows the user to
+create custom Memes by combining a user chosen image with a cat image
+and allowing the user to specify header and footer text.
+References:
+1. Multiple stackoverflow posts were used for reference. Notes and urls
+are given in the source code.
+2. developer.android.com was used as a learning resource and for reference.
